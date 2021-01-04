@@ -1,37 +1,39 @@
 <template>
     <div>
-        <div id ="results" v-if="$props.results[0].song.songName">
-            <div class = "fadeIn">
-                <h4>{{overview}}</h4>
-                <h2><strong>{{$props.results.length}}</strong></h2>
-            </div>
-          
-          <!-- <div class = "row"> -->
-            <div v-bind:key="result.song.songId" v-for="result in $props.results" class="fadeIn">
-                  <div class="row text-center">
-                    <img :src="artistPicture(result.srcArtist)" class="src-artist artist">
-                    <img :src="artistPicture(result.dstArtist)" class="dst-artist artist">
+        <div id ="results" v-if="$props.results.length">
+            <div v-if="$props.results[0].song">                
+                <div class = "fadeIn">
+                    <h4>{{overview}}</h4>
+                    <h2><strong>{{$props.results.length}}</strong></h2>
                 </div>
-                <div class ="row artist-text">
-                    <p><strong>{{result.srcArtist.artistName}}</strong> and <strong>{{result.dstArtist.artistName}}</strong>
-                    <br>
-                    Appear on <strong>"{{result.song.songName}}"</strong> together.</p>
+            
+            <!-- <div class = "row"> -->
+                <div v-bind:key="result.song.songId" v-for="result in $props.results" class="fadeIn">
+                    <div class="row text-center">
+                        <img :src="artistPicture(result.srcArtist)" class="src-artist artist">
+                        <img :src="artistPicture(result.dstArtist)" class="dst-artist artist">
+                    </div>
+                    <div class ="row artist-text">
+                        <p><strong>{{result.srcArtist.artistName}}</strong> and <strong>{{result.dstArtist.artistName}}</strong>
+                        <br>
+                        Appear on <strong>"{{result.song.songName}}"</strong> together.</p>
+                    </div>
+                    <iframe :src=embedUrl(result.song.songId) width="300" height="80" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>    
                 </div>
-                <iframe :src=embedUrl(result.song.songId) width="300" height="80" frameborder="0" allowtransparency="true" allow="encrypted-media"></iframe>    
+            <!-- </div> -->
+
+                <button class="btn btn-danger fadeIn" @click="toggleSearch(true)">Try with other artists</button>
             </div>
-          <!-- </div> -->
-
-          <button class="btn btn-danger fadeIn" @click="toggleSearch(true)">Try with other artists</button>
+            <div v-else-if="results.length === 1">
+                <h4 class="fadeIn">There is no link between {{results[0].srcArtist.artistName}} and {{results[0].dstArtist.artistName}}. Their Spotify Distance is </h4>
+                <h2><strong>Infinity</strong></h2>
+                <p class ="msg fadeIn">This is most likely because one of the artists has not collaborated with anybody (yet).</p>
+                <p class ="msg fadeIn">Furthermore, bands do not list each member as artists.</p>
+                <p class ="msg fadeIn">For example, Paul McCartney and Ringo Starr were both members of the Beatles, but both have few solo projects with other artists.</p>
+                <button class="btn btn-danger fadeIn" @click="toggleSearch(true)">Try again with other artists</button>
+            </div>
         </div>
-        <div v-else-if="results.length === 1">
-            <h4 class="fadeIn">There is no link between {{results[0].srcArtist.artistName}} and {{results[0].dstArtist.artistName}}. Their Spotify Distance is </h4>
-            <h2><strong>Infinity</strong></h2>
-            <p class ="msg fadeIn">This is most likely because one of the artists has not collaborated with anybody (yet).</p>
-            <p class ="msg fadeIn">Furthermore, bands do not list each member as artists.</p>
-            <p class ="msg fadeIn">For example, Paul McCartney and Ringo Starr were both members of the Beatles, but both have few solo projects with other artists.</p>
-            <button class="btn btn-danger fadeIn" @click="toggleSearch(true)">Try again with other artists</button>
 
-        </div>
     </div>
 </template>
 
@@ -62,7 +64,7 @@ export default {
     },
     updated(){
         let fadeInItems = document.getElementsByClassName('fadeIn')
-        
+        console.log(this.$props.results)
         for(let i = 0; i < fadeInItems.length; i++){
             let element = fadeInItems[i]
 
