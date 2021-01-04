@@ -1,10 +1,9 @@
 <template>
     <div>
-        <div id ="results" v-if="results.length > 1">
+        <div id ="results" v-if="$props.results[0].song.songName">
             <div class = "fadeIn">
                 <h4>{{overview}}</h4>
                 <h2><strong>{{$props.results.length}}</strong></h2>
-
             </div>
           
           <!-- <div class = "row"> -->
