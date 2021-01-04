@@ -219,6 +219,8 @@ export default {
   mounted(){
     this.autocomplete(document.getElementById('artist1'), 0)
     this.autocomplete(document.getElementById('artist2'), 1)
+    document.getElementById('searchButton').style.display ="inline"
+    document.getElementById('artistCount').style.display='none'
     spotify.getToken().then(token => this.token = token)
   }
 }

@@ -64,7 +64,6 @@ export default {
     },
     updated(){
         let fadeInItems = document.getElementsByClassName('fadeIn')
-        console.log(this.$props.results)
         for(let i = 0; i < fadeInItems.length; i++){
             let element = fadeInItems[i]
 
