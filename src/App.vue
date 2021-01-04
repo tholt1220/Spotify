@@ -5,7 +5,7 @@
       <p>There are over 25 million different artists on Spotify, and on average each artist colaborates with 3.51 other artists. So how many collaborations would it get from Snoop Dogg to Celine Dion?</p>
       <p>Find two artists' <strong>SPOTIFY DISTANCE</strong>, AKA the degrees of separation between them. </p>
   </div>     
-  <div v-if="isSearching">
+  <div v-if="isSearching" class="content">
       <Search @toggle-search="toggleSearch" @results="getResults" />
   </div>
   <div v-else>
@@ -70,12 +70,13 @@ html, body{
     min-height: 100%
 }
 
-search {
-  margin-top: 60px
+.content {
+  margin-bottom: 300px !important;
 }
 
 .footer {
   text-align:center;
+  padding-top: 25px;
   /* position: fixed; */
   bottom:0;
 }

@@ -294,7 +294,7 @@ form .form-control:focus{
   /* height: 300px; */
   width: 40%;
   position: relative;
-  padding-bottom: 40%;;
+  padding-bottom: 40%;
   text-align:center;
   border-radius: 50%;
   margin-bottom: 15px;
