@@ -4,6 +4,12 @@
 const axios = require('axios')
 const qs = require('querystring')
 const {map, pipe, get, flatten, uniqBy, remove, assign}= require('lodash/fp') 
+
+function delay(t, v) {
+    return new Promise(function(resolve) { 
+        setTimeout(resolve.bind(null, v), t)
+    });
+ }
 class Queue{
     constructor(elements = []){
         this.elements = elements
@@ -55,7 +61,12 @@ function searchArtist(name,token){
     return axios.get(`https://api.spotify.com/v1/search`, config)
         .then(res => res.data.artists.items.map(item => ({artistId: item.id, artistName: item.name, artistPicture: item.images[0]})))
         // .then(res => (//{artistId: res.data.artists.items[0].id, artistName: res.data.artists.items[0].name}))
-        .catch(console.error)
+        .catch(e => {
+            const timeout = parseInt(e.response.headers['retry-after'])
+
+            return delay(1000*timeout)
+            .then(() => searchArtist(name, token))        
+        })
 }
 
 function getArtist(id,token){
@@ -68,7 +79,12 @@ function getArtist(id,token){
 
     return axios.get(`https://api.spotify.com/v1/artists/${id}`, config)
         .then(res => {return {artistName: res.data.name, artistId: res.data.id, artistPicture: res.data.images[0]}})
-        .catch(console.error)
+        .catch(e => {
+            const timeout = parseInt(e.response.headers['retry-after'])
+
+            return delay(1000*timeout)
+                .then(() => getArtist(id, token))
+            })
 }
 
 //return all of an artists albums and singles
@@ -92,9 +108,14 @@ function getAlbumsFromArtist(artistId, token){
                 map(item => item.id)
             )(response)
         )
-        .catch(console.error)
-}
+        .catch(e => {
+            const timeout = parseInt(e.response.headers['retry-after'])
+            // console.log(`getAlbumsFromArtist: ${timeout}`)
 
+            return delay(1000*timeout)
+                .then(() => getAlbumsFromArtist(artistId, token))   
+            })
+    }
 //from album/albums, return any songs with features
 function getArtistsFromAlbum(artistId, albumId, token){
     const  config = {
@@ -132,7 +153,12 @@ function getArtistsFromAlbum(artistId, albumId, token){
                 uniqBy(object => object.artistName)
             )(response)
         )
-        .catch(console.error)
+        .catch(e => {
+            const timeout = parseInt(e.response.headers['retry-after'])
+            // console.log(`getArtistsFromAlbum: ${timeout}`)
+            return delay(1000*timeout)
+                .then(() => getArtistsFromAlbum(artistId, albumId, token))
+        })
 }
 
 //return all songs that feature another artist, given an artist
@@ -142,8 +168,8 @@ function getCollaborators(artistId, token){
         let n = albums.length
         let promises = []
         for(let i = 0; i < n; i+= 20){ //Spotify API only allows for 20 albums at a time
-             promises.push(getArtistsFromAlbum(artistId, albums.slice(i, i+ 20).join(), token))
-        }
+            promises.push(getArtistsFromAlbum(artistId, albums.slice(i, i+ 20).join(), token))
+        } 
         return promises
     })
     .then(promises => Promise.all(promises))

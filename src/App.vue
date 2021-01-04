@@ -59,11 +59,15 @@ export default {
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
   color: #2c3e50;
-  background-color:#a8dadc
+  background-color:#a8dadc;
+  height: 100%;
+  min-height: 100%;
 }
 
-html{
-    background-color:#a8dadc
+html, body{
+    background-color:#a8dadc;
+    height: 100%;
+    min-height: 100%
 }
 
 search {
@@ -72,7 +76,7 @@ search {
 
 .footer {
   text-align:center;
-  position: fixed;
+  /* position: fixed; */
   bottom:0;
 }
 </style>
