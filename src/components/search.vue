@@ -221,6 +221,9 @@ export default {
     this.autocomplete(document.getElementById('artist2'), 1)
     document.getElementById('searchButton').style.display ="inline"
     document.getElementById('artistCount').style.display='none'
+    document.getElementById('artist1').value=''
+    document.getElementById('artist2').value=''
+
     spotify.getToken().then(token => this.token = token)
   }
 }
