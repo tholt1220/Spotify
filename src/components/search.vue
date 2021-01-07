@@ -257,6 +257,7 @@ form .form-control:focus{
 .autocomplete{
   position: relative;
   display: inline-block;
+  width:100%;
 }
 
 .autocomplete-active{
@@ -291,13 +292,11 @@ form .form-control:focus{
 }
 
 .artist-pic-wrapper {
-  /* margin: auto; */
   background: #e63946;
-  border: 6px solid  #6d1f2588;
-  /* height: 300px; */
-  width: 40%;
-  position: relative;
-  padding-bottom: 40%;
+  border: 3px solid  #6d1f2588;
+  /* width: 40%; */
+  position: relative !important;
+  padding-bottom: calc(40% - 6px);
   text-align:center;
   border-radius: 50%;
   margin-bottom: 15px;
@@ -324,8 +323,10 @@ button{
 
 .transformLeft-active{
       /* right: 50%;  */
+      width: 40%;
       margin-right: calc(-10%);
       margin-left: auto;
+      left: 0;
       opacity: 0.9;
       animation: spin 12s linear 1s infinite;
 
@@ -341,6 +342,7 @@ button{
 
 .transformRight-active{
       /* left: 50%;  */
+      width: 40%;
       margin-left: calc(-10%);
       margin-right: auto;
       opacity: 0.9;
