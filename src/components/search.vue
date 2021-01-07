@@ -67,7 +67,9 @@ export default {
       document.getElementById('searchSpinner').style.display = 'inline-block';
       document.getElementById('searchButton').style.display ="none"
       document.getElementById('artistCount').style.display='inline'
-            
+      document.getElementById('artist1').disabled = true
+      document.getElementById('artist2').disabled = true
+
       this.computePath()
     },
 
@@ -77,9 +79,9 @@ export default {
       spotify.BDS(this.queryArtists[0], this.queryArtists[1], this.token)
       .then(async res => {
         // this.results = await this.parseResult(res)
-        document.getElementById("searchSpinner").style.display = "none";
         
           setTimeout(async () => {
+            document.getElementById("searchSpinner").style.display = "none";
             this.$emit("toggle-search", false)
             this.$emit("results", await this.parseResult(res))
           }, 2000)
@@ -223,6 +225,7 @@ export default {
     document.getElementById('artistCount').style.display='none'
     document.getElementById('artist1').value=''
     document.getElementById('artist2').value=''
+    document.getElementById('artistCount').getElementsByTagName('span')[0].innerHTML =''
 
     spotify.getToken().then(token => this.token = token)
   }
