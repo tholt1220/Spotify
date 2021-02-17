@@ -36,7 +36,7 @@ async function getToken(){
     const config = {
         headers: {
             'Content-Type': 'application/x-www-form-urlencoded',
-            Authorization: 'Basic NDE3OThmMDVmZjY4NDU5ODg1YWFmMzUyNDgyNDE4NTU6NDEzYThlZWE1M2FkNGQ0ZmI2MThiYTIxZGUwNzc0YWE='
+            Authorization: process.env.SPOTIFY_API_KEY
         },
     }
         
