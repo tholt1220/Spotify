@@ -1,4 +1,4 @@
-# spotify
+# Spotify Distance
 
 ## Project setup
 ```
